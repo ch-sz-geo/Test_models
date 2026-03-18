@@ -1,0 +1,12 @@
+LATEST VERSION
+-----------------------------
+- repos clone: unset/clear precursorVersion
+- fix succesfull execution returns errorlevel "1" instead of "0" (#13) 
+
+ilimanager 0.9.1 (2022-11-14)
+-------------------------------
+- fix "Folder ch.ehi.ilimanager.ilidirs doesn't exist; ignored" (#5)
+
+ilimanager 0.9.0 (2022-11-08)
+-------------------------------
+- initial coding/release
