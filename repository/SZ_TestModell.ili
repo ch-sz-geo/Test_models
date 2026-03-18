@@ -15,7 +15,7 @@ INTERLIS 2.3;
 !! 2026-03-18 |  -  | wed | Erstfassung
 !!==============================================================================
 
-MODEL TestModell (de)
+MODEL SZ_TestModell (de)
   AT "https://raw.githubusercontent.com/ch-sz-geo/Test_models/main/repository/"
   VERSION "1.0" =
 
