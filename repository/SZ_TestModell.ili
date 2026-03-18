@@ -1,0 +1,17 @@
+INTERLIS 2.3;
+
+MODEL TestModell (de)
+  AT "https://raw.githubusercontent.com/org/Test/main/"
+  VERSION "1.0" =
+
+  TOPIC Buildings =
+
+    CLASS Building =
+      Name    : MANDATORY TEXT*100;
+      Address : TEXT*200;
+      YearBuilt : 1800 .. 2100;
+    END Building;
+
+  END Buildings;
+
+END TestModel.
