@@ -1,4 +1,19 @@
 INTERLIS 2.3;
+!!==============================================================================
+!!@ Title               = "TestModell";
+!!@ shortDescription    = "Model zum Testen von GitHUB und iliTools";
+!!@ technicalContact    = "mailto:geoportal@sz.ch";
+!!@ furtherInformation  = "";
+!!@ Themennummer        = "";
+!!@ Compiler-Version    = "ili2c-5.5.3-6c54f443006d3ca72d3e5a2392e7d5a2f75b6e8b";
+!!------------------------------------------------------------------------------
+!! Todo: - - -
+!!------------------------------------------------------------------------------
+!!      Version     | wer | was
+!! Datum      | Nr  |     |
+!!------------------------------------------------------------------------------
+!! 2026-03-18 |  -  | wed | Erstfassung
+!!==============================================================================
 
 MODEL TestModell (de)
   AT "https://raw.githubusercontent.com/ch-sz-geo/Test_models/main/repository/"
