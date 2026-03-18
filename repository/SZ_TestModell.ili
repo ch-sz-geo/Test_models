@@ -29,4 +29,4 @@ MODEL SZ_TestModell (de)
 
   END Buildings;
 
-END TestModel.
+END SZ_TestModell.
