@@ -21,7 +21,7 @@ jobs:
       - name: ilimanagerInstalation
         uses: ch-sz-geo/interlis-actions/setup-ilimanager@v0(DEV)
         with:
-          install-dir: ../ilimanager
+          path: ../ilimanager
       - name: verify java Version
         run: java --version
       - name: find ilimanager
