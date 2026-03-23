@@ -9,7 +9,7 @@
   <Version>2025-01-24</Version>
   <NameLanguage>de</NameLanguage>
   <publishingDate>2026-03-23</publishingDate>
-  <Issuer>https://https://raw.githubusercontent.com/ch-sz-geo/Test_models/</Issuer>
+  <Issuer>https://https://raw.githubusercontent.com/ch-sz-geo/Test_models</Issuer>
   <technicalContact>mailto:geoportal@sz.ch</technicalContact>
   <furtherInformation>https://www.sz.ch</furtherInformation>
   <browseOnly>false</browseOnly>
@@ -22,7 +22,7 @@
   <Version>1.1</Version>
   <NameLanguage>de</NameLanguage>
   <publishingDate>2026-03-23</publishingDate>
-  <Issuer>https://raw.githubusercontent.com/ch-sz-geo/Test_models/</Issuer>
+  <Issuer>https://raw.githubusercontent.com/ch-sz-geo/Test_models</Issuer>
   <technicalContact>mailto:geoportal@sz.ch</technicalContact>
   <browseOnly>false</browseOnly>
   <md5>f28a77fb7bb8b13d765f46687900e8b1</md5>
