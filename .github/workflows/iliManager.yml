@@ -34,8 +34,7 @@ jobs:
           
       - name: run iliManager
         run: |
-          java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./ --siteUrl https://https://github.com/WehrliDavid/TestModelRemoteUpdate
-          ls 
+          java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml
           echo "parent:"
           ls ..
       - name: Commit and push changes
@@ -43,6 +42,6 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git status
-          git add repository/ilimodels.xml
-          git commit -am "Created and Added ilimodels.xml"
+          git add ilimodels.xml
+          git commit -am "Created or Updated and Added ilimodels.xml"
           git push origin main
