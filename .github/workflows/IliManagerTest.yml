@@ -33,3 +33,5 @@ jobs:
           ls
           echo "parent: "
           ls ..
+          echo "Ilimanager:"
+          ls ../ilimanager
