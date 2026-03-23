@@ -19,4 +19,4 @@ jobs:
         run: java --version
       - name: run iliManager
         run: |
-          java -jar ili2c/ili2c.jar" --check-repo-ilis https://raw.githubusercontent.com/ch-sz-geo/Test_models
+          java -jar ili2c/ili2c.jar --check-repo-ilis https://raw.githubusercontent.com/ch-sz-geo/Test_models
