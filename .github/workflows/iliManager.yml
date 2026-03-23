@@ -27,10 +27,10 @@ jobs:
       - name: verify java Version
         run: java --version
         
-      - name: ili2cInstalation
-        uses: ch-sz-geo/interlis-actions/setup-iliCompiler@v0(DEV)
+      - name: ilimanagerInstalation
+        uses: ch-sz-geo/interlis-actions/setup-ilimanager@v0(DEV)
         with:
-          path: ../ili2c
+          path: ../ilimanager
           
       - name: run iliManager
         run: |
