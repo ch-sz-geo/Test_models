@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><TRANSFER xmlns="http://www.interlis.ch/INTERLIS2.3">
+<HEADERSECTION SENDER="ilimanager-0.9.2-SNAPSHOT-f6b232e32f66abe88695b86cf36cc5b5acceab48" VERSION="2.3"><MODELS><MODEL NAME="IliRepository20" VERSION="2020-04-17" URI="http://models.interlis.ch/core"></MODEL></MODELS></HEADERSECTION>
+<DATASECTION>
+<IliRepository20.RepositoryIndex BID="b1">
+<IliRepository20.RepositoryIndex.ModelMetadata TID="0">
+  <Name>Testmodell_03</Name>
+  <SchemaLanguage>ili2_4</SchemaLanguage>
+  <File>main/repository/Testmodell_03.ili</File>
+  <Version>2025-01-24</Version>
+  <NameLanguage>de</NameLanguage>
+  <publishingDate>2026-03-23</publishingDate>
+  <Issuer>https://https://raw.githubusercontent.com/ch-sz-geo/Test_models</Issuer>
+  <technicalContact>mailto:geoportal@sz.ch</technicalContact>
+  <furtherInformation>https://www.sz.ch</furtherInformation>
+  <browseOnly>false</browseOnly>
+  <md5>f1d7fe792343705733b24a902741447f</md5>
+</IliRepository20.RepositoryIndex.ModelMetadata>
+<IliRepository20.RepositoryIndex.ModelMetadata TID="1">
+  <Name>SZ_TestModell</Name>
+  <SchemaLanguage>ili2_3</SchemaLanguage>
+  <File>main/repository/SZ_TestModell.ili</File>
+  <Version>1.1</Version>
+  <NameLanguage>de</NameLanguage>
+  <publishingDate>2026-03-23</publishingDate>
+  <Issuer>https://raw.githubusercontent.com/ch-sz-geo/Test_models</Issuer>
+  <technicalContact>mailto:geoportal@sz.ch</technicalContact>
+  <browseOnly>false</browseOnly>
+  <md5>87bff1c43cea4a746c382b9147c649dc</md5>
+</IliRepository20.RepositoryIndex.ModelMetadata>
+</IliRepository20.RepositoryIndex>
+</DATASECTION>
+</TRANSFER>
