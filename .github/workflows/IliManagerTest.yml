@@ -22,6 +22,10 @@ jobs:
         uses: ch-sz-geo/interlis-actions/setup-ilimanager@v0(DEV)
         with:
           path: ../ilimanager
+      - name: ili2cInstalation
+        uses: ch-sz-geo/interlis-actions/setup-iliCompiler@v0(DEV)
+        with:
+          path: ../ili2c
       - name: verify java Version
         run: java --version
       - name: find ilimanager
