@@ -17,16 +17,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Set up JDK 25
         uses: actions/setup-java@v3
         with:
           java-version: '25'
           distribution: 'adopt'
+          
       - name: verify java Version
         run: java --version
+        
+      - name: ili2cInstalation
+        uses: ch-sz-geo/interlis-actions/setup-iliCompiler@v0(DEV)
+        with:
+          path: ../ili2c
+          
       - name: run iliManager
         run: |
-          java -jar ilimanager-0.9.2-SNAPSHOT/ilimanager-0.9.2-SNAPSHOT.jar --updateIliModels --out ilimodels.xml --repos ./ --siteUrl https://https://github.com/WehrliDavid/TestModelRemoteUpdate
+          java -jar ../ilimanager/ilimanager-0.9.2-SNAPSHOT.jar --updateIliModels --out ilimodels.xml --repos ./ --siteUrl https://https://github.com/WehrliDavid/TestModelRemoteUpdate
+      
       - name: Commit and push changes
         run: |
           git config user.name "github-actions"
