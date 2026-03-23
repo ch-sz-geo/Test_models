@@ -13,14 +13,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          path: Test_Models
       - name: Set up JDK 25
         uses: actions/setup-java@v3
         with:
           java-version: '25'
           distribution: 'adopt'
       - name: ilimanagerInstalation
+        with:
+          path: ../ilimanager
         uses: ch-sz-geo/interlis-actions/setup-ilimanager@v0(DEV)
       - name: verify java Version
         run: java --version
