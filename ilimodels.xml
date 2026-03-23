@@ -5,7 +5,7 @@
 <IliRepository20.RepositoryIndex.ModelMetadata TID="0">
   <Name>Testmodell_03</Name>
   <SchemaLanguage>ili2_4</SchemaLanguage>
-  <File>main/repository/Testmodell_03.ili</File>
+  <File>repository/Testmodell_03.ili</File>
   <Version>2025-01-24</Version>
   <NameLanguage>de</NameLanguage>
   <publishingDate>2026-03-23</publishingDate>
@@ -18,7 +18,7 @@
 <IliRepository20.RepositoryIndex.ModelMetadata TID="1">
   <Name>SZ_TestModell</Name>
   <SchemaLanguage>ili2_3</SchemaLanguage>
-  <File>main/repository/SZ_TestModell.ili</File>
+  <File>repository/SZ_TestModell.ili</File>
   <Version>1.1</Version>
   <NameLanguage>de</NameLanguage>
   <publishingDate>2026-03-23</publishingDate>
