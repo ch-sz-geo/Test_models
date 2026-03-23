@@ -1,6 +1,11 @@
 name: IliRepoValidation
 
 on: 
+  push:
+    branches: [main, master]
+    paths: 
+      - 'ilimodels.txt'
+  
   workflow_dispatch:
 
 jobs:
@@ -16,7 +21,7 @@ jobs:
           java-version: '25'
           distribution: 'adopt'
       - name: ili2cInstalation
-        uses: ch-sz-geo/interlis-actions/setup-iliCompiler@v0(DEV)
+        uses: ch-sz-geo/interlis-setup-actions/setup-iliCompiler@v1
         with:
           path: ../ili2c
       - name: verify java Version
