@@ -1,6 +1,10 @@
 name: IliRepoValidation
 
 on: 
+  workflow_run:
+    workflows: ["IliManagement"]   # must match the 'name:' field exactly
+    types:
+      - completed
   push:
     paths: 
       - 'ilimodels.xml'
