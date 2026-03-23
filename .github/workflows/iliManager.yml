@@ -28,7 +28,7 @@ jobs:
         run: java --version
         
       - name: ilimanagerInstalation
-        uses: ch-sz-geo/interlis-setup-actions/setup-ilimanager@v1
+        uses: ch-sz-geo/interlis-setup-actions/setup-ilimanager@latest
         with:
           path: ../ilimanager
           
