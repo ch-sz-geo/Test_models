@@ -35,7 +35,9 @@ jobs:
       - name: run iliManager
         run: |
           java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./ --siteUrl https://https://github.com/WehrliDavid/TestModelRemoteUpdate
-      
+          ls 
+          echo "parent:"
+          ls ..
       - name: Commit and push changes
         run: |
           git config user.name "github-actions"
