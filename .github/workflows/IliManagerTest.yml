@@ -1,7 +1,6 @@
 name: IliManagementTEST
 
 on: 
-  push:
   workflow_dispatch:
 
 jobs:
