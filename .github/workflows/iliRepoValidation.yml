@@ -21,7 +21,7 @@ jobs:
           java-version: '25'
           distribution: 'adopt'
       - name: ili2cInstalation
-        uses: ch-sz-geo/interlis-setup-actions/setup-iliCompiler@v1
+        uses: ch-sz-geo/interlis-setup-actions/setup-iliCompiler@latest
         with:
           path: ../ili2c
       - name: verify java Version
