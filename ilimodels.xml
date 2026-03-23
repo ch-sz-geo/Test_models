@@ -13,7 +13,7 @@
   <technicalContact>mailto:geoportal@sz.ch</technicalContact>
   <furtherInformation>https://www.sz.ch</furtherInformation>
   <browseOnly>false</browseOnly>
-  <md5>f1d7fe792343705733b24a902741447f</md5>
+  <md5>23f1d234f64b3428a9beb3d1a5efc3b4</md5>
 </IliRepository20.RepositoryIndex.ModelMetadata>
 <IliRepository20.RepositoryIndex.ModelMetadata TID="1">
   <Name>SZ_TestModell</Name>
@@ -25,7 +25,7 @@
   <Issuer>https://raw.githubusercontent.com/ch-sz-geo/Test_models</Issuer>
   <technicalContact>mailto:geoportal@sz.ch</technicalContact>
   <browseOnly>false</browseOnly>
-  <md5>87bff1c43cea4a746c382b9147c649dc</md5>
+  <md5>10cb6b99fa88a1dac48c5eb9e7af5d2f</md5>
 </IliRepository20.RepositoryIndex.ModelMetadata>
 </IliRepository20.RepositoryIndex>
 </DATASECTION>
