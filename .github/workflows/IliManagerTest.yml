@@ -20,7 +20,7 @@ jobs:
           java-version: '25'
           distribution: 'adopt'
       - name: ilimanagerInstalation
-        uses: ch-sz-geo/setup-ilimanager@v1
+        uses: ch-sz-geo/setup-ilimanager@v0(DEV)
       - name: verify java Version
         run: java --version
       - name: find ilimanager
