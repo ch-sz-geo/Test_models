@@ -27,4 +27,5 @@ jobs:
       - name: find ilimanager
         run: |
           ls
+          echo "parent: "
           ls ..
