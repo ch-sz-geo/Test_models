@@ -20,6 +20,10 @@ on:
         description: "Max commits to scan (0 = all)"
         required: false
         default: "0"
+      folder_path:
+        description: "Folder to filter (e.g. src/components). Leave empty for all files."
+        required: false
+        default: ""
 
 jobs:
   file-change-history:
@@ -60,6 +64,11 @@ jobs:
             GIT_LOG_ARGS="$GIT_LOG_ARGS -n $MAX_COMMITS"
           fi
 
+          # After building GIT_LOG_ARGS...
+          if [ -n "${{ inputs.folder_path }}" ]; then
+            GIT_LOG_ARGS="$GIT_LOG_ARGS -- ${{ inputs.folder_path }}"
+          fi
+
           # ── Markdown ─────────────────────────────────────────────────────────
           if [ "$FORMAT" = "markdown" ]; then
             OUTFILE="$OUTPUT_DIR/file-changes.md"
@@ -80,10 +89,12 @@ jobs:
               # Get parent (empty string for initial commit)
               PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
 
+              DIFF_PATH="${{ inputs.folder_path }}"
+
               if [ -z "$PARENT" ]; then
-                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" -- $DIFF_PATH 2>/dev/null || true)
               else
-                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+                FILES=$(git diff --name-status "$PARENT" "$sha" -- $DIFF_PATH 2>/dev/null || true)
               fi
 
               [ -z "$FILES" ] && continue  # skip empty merges
@@ -129,10 +140,12 @@ jobs:
               [ -z "$sha" ] && continue
               PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
 
+              DIFF_PATH="${{ inputs.folder_path }}"
+
               if [ -z "$PARENT" ]; then
-                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" -- $DIFF_PATH 2>/dev/null || true)
               else
-                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+                FILES=$(git diff --name-status "$PARENT" "$sha" -- $DIFF_PATH 2>/dev/null || true)
               fi
 
               [ -z "$FILES" ] && continue
@@ -180,10 +193,12 @@ jobs:
               [ -z "$sha" ] && continue
               PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
 
+              DIFF_PATH="${{ inputs.folder_path }}"
+
               if [ -z "$PARENT" ]; then
-                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" -- $DIFF_PATH 2>/dev/null || true)
               else
-                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+                FILES=$(git diff --name-status "$PARENT" "$sha" -- $DIFF_PATH 2>/dev/null || true)
               fi
 
               [ -z "$FILES" ] && continue
