@@ -35,7 +35,12 @@ jobs:
         with:
           fetch-depth: 0  # Required: fetches all commits, not just the latest
           ref: ${{ inputs.branch }}
+          
+      - name: TESTSTUF
+        run: |
+          ls
 
+          
       - name: Generate file change report
         id: report
         run: |
