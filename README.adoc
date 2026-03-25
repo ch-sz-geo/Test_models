@@ -1,3 +1,4 @@
 # models
 
 Dieses Repository führt alle in GitHub verwalteten INTERLIS-Modelle des Kantons Schwyz. Es bildet eine weitere Hierarchiestufe des bereits seit Jahren bestehenden https://models.geo.sz.ch/[kantonalen Modell-Repositorys] und soll diese mit der Zeit ablösen
+Editing for testing
