@@ -79,8 +79,8 @@ jobs:
                   esac
                   echo "| $label | \`$filepath\` |"
                   mkdir -p "./$sha/$(dirname "$filepath")"
+                  echo "$GIT_URL/$sha/$filepath"
                   curl "$GIT_URL/$sha/$filepath" -o "./$sha/$filepath"
-                  echo "./$sha/$filepath"
                   
                 done <<< "$FILES"
                 
