@@ -50,7 +50,7 @@ MODEL Testmodell_04 (de)
   TOPIC Fachdaten =
     BASKET OID AS BasketID;
     OID AS UUIDOID;
-    DEPENDS ON Testmodell_03.Stammdaten;
+    DEPENDS ON Testmodell_04.Stammdaten;
 !!------------------------------------------------------------------------------
 
     CLASS Person =
@@ -89,7 +89,7 @@ MODEL Testmodell_04 (de)
     END Person__Adresse__Person;
 
     ASSOCIATION Adresstyp__Person__Adresse =
-      rAdresstyp (EXTERNAL)  --  {1}     Testmodell_03.Stammdaten.Adresstyp;
+      rAdresstyp (EXTERNAL)  --  {1}     Testmodell_04.Stammdaten.Adresstyp;
       rPerson__Adresse       --  {0..*}  Person__Adresse;
     END Adresstyp__Person__Adresse;
 
