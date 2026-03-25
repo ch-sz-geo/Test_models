@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         
       - name: Set up JDK 25
         uses: actions/setup-java@v3
@@ -31,6 +33,31 @@ jobs:
         uses: ch-sz-geo/interlis-setup-action/setup-ilimanager@v1
         with:
           path: ../ilimanager
+
+      - name: getComitHistory
+        run: |
+           set -euo pipefail
+
+           MAX_COMMITS="0"
+           GIT_URL="https://raw.githubusercontent.com/ch-sz-geo/Test_models/"
+
+           # Determine the ref to scan
+           if [ -z "$BRANCH" ]; then
+             REF=$(git rev-parse --abbrev-ref HEAD)
+           else
+             REF="$BRANCH"
+           fi
+
+           echo "Scanning branch: $REF"
+           echo "Output format:   $FORMAT"
+           echo "Max commits:     ${MAX_COMMITS:-all}"
+
+           # Build the git log command
+           GIT_LOG_ARGS="--format=%H|||%as|||%an|||%s"
+           if [ "$MAX_COMMITS" -gt 0 ] 2>/dev/null; then
+             GIT_LOG_ARGS="$GIT_LOG_ARGS -n $MAX_COMMITS"
+           fi
+          
           
       - name: run iliManager
         run: |
