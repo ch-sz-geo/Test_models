@@ -39,16 +39,11 @@ jobs:
           set -euo pipefail
 
           GIT_URL="https://raw.githubusercontent.com/ch-sz-geo/Test_models/"
-
-          
           REF=$(git rev-parse --abbrev-ref HEAD)
-
           echo "Scanning branch: $REF"
-
           
           GIT_LOG_ARGS="--format=%H|||%as|||%an|||%s"
-          GIT_LOG_ARGS="$GIT_LOG_ARGS"
-
+         
           while IFS='|||' read -r sha date author subject; do
               [ -z "$sha" ] && continue
 
@@ -83,12 +78,13 @@ jobs:
                     *)  label="$status" ;;
                   esac
                   echo "| $label | \`$filepath\` |"
+                  mkdir -p "./$sha/"
                   curl -s "$GIT_URL/$sha/$filepath" -o "./$sha/$filepath"
                   echo "./$sha/$filepath"
                   
-                done 
-                echo "done"
+                done <<< "$FILES"
+                
               
-          done
-
+          done < <(git log $GIT_LOG_ARGS)
+          echo "done"
           ls
