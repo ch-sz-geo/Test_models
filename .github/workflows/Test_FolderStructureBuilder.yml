@@ -83,10 +83,12 @@ jobs:
                     *)  label="$status" ;;
                   esac
                   echo "| $label | \`$filepath\` |"
-                  curl "$GIT_URL/$sha/$filepath"
+                  curl -s "$GIT_URL/$sha/$filepath" -o "./$sha/$filepath"
                   echo "./$sha/$filepath"
-                  ls
+                  
                 done 
                 echo "done"
-              ls
+              
           done
+
+          ls
