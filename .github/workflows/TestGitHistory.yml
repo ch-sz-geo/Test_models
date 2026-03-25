@@ -1,0 +1,225 @@
+name: File Change History
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to scan (leave empty for current branch)"
+        required: false
+        default: ""
+      output_format:
+        description: "Output format"
+        required: true
+        default: "markdown"
+        type: choice
+        options:
+          - markdown
+          - json
+          - csv
+      max_commits:
+        description: "Max commits to scan (0 = all)"
+        required: false
+        default: "0"
+
+jobs:
+  file-change-history:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required: fetches all commits, not just the latest
+          ref: ${{ inputs.branch }}
+
+      - name: Generate file change report
+        id: report
+        run: |
+          set -euo pipefail
+
+          BRANCH="${{ inputs.branch }}"
+          FORMAT="${{ inputs.output_format }}"
+          MAX_COMMITS="${{ inputs.max_commits }}"
+          OUTPUT_DIR="change-history-report"
+          mkdir -p "$OUTPUT_DIR"
+
+          # Determine the ref to scan
+          if [ -z "$BRANCH" ]; then
+            REF=$(git rev-parse --abbrev-ref HEAD)
+          else
+            REF="$BRANCH"
+          fi
+
+          echo "Scanning branch: $REF"
+          echo "Output format:   $FORMAT"
+          echo "Max commits:     ${MAX_COMMITS:-all}"
+
+          # Build the git log command
+          GIT_LOG_ARGS="--format=%H|||%as|||%an|||%s"
+          if [ "$MAX_COMMITS" -gt 0 ] 2>/dev/null; then
+            GIT_LOG_ARGS="$GIT_LOG_ARGS -n $MAX_COMMITS"
+          fi
+
+          # ── Markdown ─────────────────────────────────────────────────────────
+          if [ "$FORMAT" = "markdown" ]; then
+            OUTFILE="$OUTPUT_DIR/file-changes.md"
+            {
+              echo "# File Change History"
+              echo ""
+              echo "**Repository:** \`${{ github.repository }}\`"
+              echo "**Branch:** \`$REF\`"
+              echo "**Generated:** $(date -u '+%Y-%m-%d %H:%M UTC')"
+              echo ""
+              echo "---"
+              echo ""
+            } > "$OUTFILE"
+
+            while IFS='|||' read -r sha date author subject; do
+              [ -z "$sha" ] && continue
+
+              # Get parent (empty string for initial commit)
+              PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
+
+              if [ -z "$PARENT" ]; then
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+              else
+                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+              fi
+
+              [ -z "$FILES" ] && continue  # skip empty merges
+
+              {
+                echo "## \`${sha:0:8}\` — $date"
+                echo ""
+                echo "**Author:** $author  "
+                echo "**Message:** $subject  "
+                echo "**Full SHA:** \`$sha\`"
+                echo ""
+                echo "| Status | File |"
+                echo "|--------|------|"
+                while IFS=$'\t' read -r status filepath; do
+                  [ -z "$status" ] && continue
+                  case "$status" in
+                    A*) label="Added" ;;
+                    M*) label="Modified" ;;
+                    D*) label="Deleted" ;;
+                    R*) label="Renamed" ;;
+                    C*) label="Copied" ;;
+                    T*) label="Type changed" ;;
+                    *)  label="$status" ;;
+                  esac
+                  echo "| $label | \`$filepath\` |"
+                done <<< "$FILES"
+                echo ""
+              } >> "$OUTFILE"
+
+            done < <(git log $GIT_LOG_ARGS "$REF")
+
+            echo "Report written to $OUTFILE"
+            TOTAL=$(grep -c '^## ' "$OUTFILE" || true)
+            echo "total_commits=$TOTAL" >> "$GITHUB_OUTPUT"
+
+          # ── JSON ─────────────────────────────────────────────────────────────
+          elif [ "$FORMAT" = "json" ]; then
+            OUTFILE="$OUTPUT_DIR/file-changes.json"
+            echo "[" > "$OUTFILE"
+            FIRST=true
+
+            while IFS='|||' read -r sha date author subject; do
+              [ -z "$sha" ] && continue
+              PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
+
+              if [ -z "$PARENT" ]; then
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+              else
+                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+              fi
+
+              [ -z "$FILES" ] && continue
+
+              [ "$FIRST" = "true" ] || echo "," >> "$OUTFILE"
+              FIRST=false
+
+              # Build files array
+              FILES_JSON="["
+              FILES_FIRST=true
+              while IFS=$'\t' read -r status filepath; do
+                [ -z "$status" ] && continue
+                # Escape special JSON chars in filepath
+                SAFE_PATH=$(printf '%s' "$filepath" | python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))")
+                [ "$FILES_FIRST" = "true" ] || FILES_JSON+=","
+                FILES_JSON+="{\"status\":\"$status\",\"file\":$SAFE_PATH}"
+                FILES_FIRST=false
+              done <<< "$FILES"
+              FILES_JSON+="]"
+
+              SAFE_SUBJECT=$(printf '%s' "$subject" | python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))")
+              SAFE_AUTHOR=$(printf '%s' "$author" | python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))")
+
+              cat >> "$OUTFILE" <<JSON
+          {
+            "sha": "$sha",
+            "short_sha": "${sha:0:8}",
+            "date": "$date",
+            "author": $SAFE_AUTHOR,
+            "message": $SAFE_SUBJECT,
+            "files": $FILES_JSON
+          }
+          JSON
+            done < <(git log $GIT_LOG_ARGS "$REF")
+
+            echo "]" >> "$OUTFILE"
+            echo "Report written to $OUTFILE"
+
+          # ── CSV ──────────────────────────────────────────────────────────────
+          elif [ "$FORMAT" = "csv" ]; then
+            OUTFILE="$OUTPUT_DIR/file-changes.csv"
+            echo "sha,short_sha,date,author,message,status,file" > "$OUTFILE"
+
+            while IFS='|||' read -r sha date author subject; do
+              [ -z "$sha" ] && continue
+              PARENT=$(git rev-parse --verify "${sha}^" 2>/dev/null || echo "")
+
+              if [ -z "$PARENT" ]; then
+                FILES=$(git diff-tree --no-commit-id -r --name-status "$sha" 2>/dev/null || true)
+              else
+                FILES=$(git diff --name-status "$PARENT" "$sha" 2>/dev/null || true)
+              fi
+
+              [ -z "$FILES" ] && continue
+
+              # CSV-escape a field (wrap in quotes, double internal quotes)
+              csv_escape() { printf '"%s"' "$(printf '%s' "$1" | sed 's/"/""/g')"; }
+
+              while IFS=$'\t' read -r status filepath; do
+                [ -z "$status" ] && continue
+                printf '%s,%s,%s,%s,%s,%s,%s\n' \
+                  "$(csv_escape "$sha")" \
+                  "$(csv_escape "${sha:0:8}")" \
+                  "$(csv_escape "$date")" \
+                  "$(csv_escape "$author")" \
+                  "$(csv_escape "$subject")" \
+                  "$(csv_escape "$status")" \
+                  "$(csv_escape "$filepath")" >> "$OUTFILE"
+              done <<< "$FILES"
+
+            done < <(git log $GIT_LOG_ARGS "$REF")
+
+            echo "Report written to $OUTFILE"
+          fi
+
+          # Summary for the job log
+          echo ""
+          echo "── Summary ──────────────────────────────"
+          wc -l "$OUTFILE"
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: file-change-history-${{ inputs.output_format }}
+          path: change-history-report/
+          retention-days: 30
+
+      - name: Print markdown report to job summary
+        if: inputs.output_format == 'markdown'
+        run: cat change-history-report/file-changes.md >> "$GITHUB_STEP_SUMMARY"
