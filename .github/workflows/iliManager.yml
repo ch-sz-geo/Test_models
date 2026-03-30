@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          GIT_URL="https://raw.githubusercontent.com/ch-sz-geo/Test_models/"
+          GIT_URL="https://raw.githubusercontent.com/ch-sz-geo/Test_models"
           REF=$(git rev-parse --abbrev-ref HEAD)
           echo "Scanning branch: $REF"
           
