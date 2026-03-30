@@ -12,9 +12,9 @@ INTERLIS 2.4;
 !!------------------------------------------------------------------------------
 !! 2025-01-24 | 1.0 | Kep | Erstfassung
 !!==============================================================================
-MODEL Testmodell_03 (de)
+MODEL Testmodell_03_v1 (de)
   AT "https://raw.githubusercontent.com/ch-sz-geo/Test_models/main/"
-  VERSION "2025-01-24" =
+  VERSION "2026-03-24" =
 
   IMPORTS UNQUALIFIED INTERLIS;
 
@@ -50,7 +50,7 @@ MODEL Testmodell_03 (de)
   TOPIC Fachdaten =
     BASKET OID AS BasketID;
     OID AS UUIDOID;
-    DEPENDS ON Testmodell_03.Stammdaten;
+    DEPENDS ON Testmodell_03_v1.Stammdaten;
 !!------------------------------------------------------------------------------
 
     CLASS Person =
@@ -89,7 +89,7 @@ MODEL Testmodell_03 (de)
     END Person__Adresse__Person;
 
     ASSOCIATION Adresstyp__Person__Adresse =
-      rAdresstyp (EXTERNAL)  --  {1}     Testmodell_03.Stammdaten.Adresstyp;
+      rAdresstyp (EXTERNAL)  --  {1}     Testmodell_03_v1.Stammdaten.Adresstyp;
       rPerson__Adresse       --  {0..*}  Person__Adresse;
     END Adresstyp__Person__Adresse;
 
@@ -100,4 +100,4 @@ MODEL Testmodell_03 (de)
 
   END Fachdaten;
 
-END Testmodell_03.
+END Testmodell_03_v1.
