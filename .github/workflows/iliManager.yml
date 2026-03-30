@@ -89,7 +89,7 @@ jobs:
           java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./
           echo "parent:"
           ls ..
-          eche "current:"
+          echo "current:"
           ls
       - name: Commit and push changes
         run: |
