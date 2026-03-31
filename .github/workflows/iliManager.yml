@@ -20,15 +20,6 @@ jobs:
         with:
           fetch-depth: 0
         
-      - name: Set up JDK 25
-        uses: actions/setup-java@v3
-        with:
-          java-version: '25'
-          distribution: 'adopt'
-          
-      - name: verify java Version
-        run: java --version
-        
       - name: ilimanagerInstalation
         uses: ch-sz-geo/interlis-setup-action/setup-ilimanager@v1
         with:
@@ -87,6 +78,16 @@ jobs:
       - name: run iliManager
         run: |
           java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./
+        
+      - name: Set up JDK 25
+        uses: actions/setup-java@v3
+        with:
+          java-version: '25'
+          distribution: 'adopt'
+          
+      - name: verify java Version
+        run: java --version
+      
       - name: run ilimodelsEditor
         run: |
           java -jar utils/IlimodelsEditor.jar -i ilimodels.xml -p --update-KeyValue File:../
