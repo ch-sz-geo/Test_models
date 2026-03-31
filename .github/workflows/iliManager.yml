@@ -87,6 +87,8 @@ jobs:
       - name: run iliManager
         run: |
           java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./
+      - name: run ilimodelsEditor
+        run: |
           java -jar utils/IlimodelsEditor.jar -i ilimodels.xml -p --update-KeyValue File:../
       - name: Commit and push changes
         run: |
