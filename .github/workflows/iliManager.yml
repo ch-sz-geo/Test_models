@@ -87,10 +87,7 @@ jobs:
       - name: run iliManager
         run: |
           java -jar ../ilimanager/ilimanager.jar --updateIliModels --out ilimodels.xml --repos ./
-          echo "parent:"
-          ls ..
-          echo "current:"
-          ls
+          java -jar utils/IlimodelsEditor.jar -i ilimodels.xml -p --update-KeyValue File:../
       - name: Commit and push changes
         run: |
           git config user.name "github-actions"
