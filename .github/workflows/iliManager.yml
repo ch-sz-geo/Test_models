@@ -1,6 +1,10 @@
 name: IliManagement
 
-on: 
+on:
+  workflow_run:
+    workflows: ["update Model Repository"]   # must match the 'name:' field exactly
+    types:
+      - completed
   push:
     branches: [main]
     paths: 
