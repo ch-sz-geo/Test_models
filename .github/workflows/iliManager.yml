@@ -90,7 +90,7 @@ jobs:
       
       - name: run ilimodelsEditor
         run: |
-          java -jar utils/IlimodelsEditor.jar -i ilimodels.xml -p --update-KeyValue File:../
+          java -jar utils/XMLCommandLineEditor.jar -i ilimodels.xml -p --update-KeyValue File:../ -r "^[0-9a-f]+/repository/[^\s]+\.ili$"
       - name: Commit and push changes
         run: |
           git config user.name "github-actions"
