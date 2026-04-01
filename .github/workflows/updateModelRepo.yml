@@ -20,7 +20,6 @@ jobs:
         with:
           repository: ${{ github.event.client_payload.repo }}
           ref: ${{ github.event.client_payload.sha }}
-          token: ${{ secrets.REMOTE_CONTROLE }}  # needs read access to source repo
           path: source_repo
 
       - name: Configure git
