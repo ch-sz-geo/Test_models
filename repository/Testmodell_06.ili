@@ -1,0 +1,103 @@
+INTERLIS 2.4;
+!!==============================================================================
+!!@ Title               = "Gebietseinteilung Forst";
+!!@ shortDescription    = "Einteilung des Kantonsgebietes in Forstkreise und Forstgebiete gemäss der kantonalen Verordnung zum Waldgesetz (SRSZ 313.111)";
+!!@ technicalContact    = "mailto:geoportal@sz.ch";
+!!@ furtherInformation  = "https://www.sz.ch";
+!!@ Themennummer        = "A256";
+!!@ Compiler-Version    = "ili2c-5.6.3-720ae8bf5621734004b9d234fde4d2fe9556b943";
+!!------------------------------------------------------------------------------
+!!      Version     | wer | was
+!! Datum      | Nr  |     |
+!!------------------------------------------------------------------------------
+!! 2025-01-24 | 1.0 | Kep | Erstfassung
+!!==============================================================================
+MODEL Testmodell_06 (de)
+  AT "https://raw.githubusercontent.com/ch-sz-geo/Test_models/main/"
+  VERSION "2026-03-24" =
+
+  IMPORTS UNQUALIFIED INTERLIS;
+
+  DOMAIN
+    BasketID = OID TEXT*255;
+    Punkt =
+      COORD 2672000.000 .. 2719000.000 [m]
+           ,1193000.000 .. 1232000.000 [m]
+           ,ROTATION 2 -> 1;
+    Gebietseinteilung =
+      AREA WITH (STRAIGHTS) VERTEX Punkt WITHOUT OVERLAPS > 0.001;
+
+!!------------------------------------------------------------------------------
+  TOPIC Stammdaten =
+    BASKET OID AS BasketID;
+    OID AS UUIDOID;
+!!------------------------------------------------------------------------------
+    CLASS Katalogeintrag (ABSTRACT) =
+      Code       :  MANDATORY  TEXT*255;
+      Name       :  MANDATORY  TEXT*255;
+      SortierNr  :  MANDATORY -999999 .. 999999;
+      Bemerkung  :             TEXT*1000;
+    END Katalogeintrag;
+
+    CLASS Adresstyp EXTENDS Katalogeintrag =
+      UNIQUE Code;
+      UNIQUE Name;
+    END Adresstyp;
+
+  END Stammdaten;
+
+!!------------------------------------------------------------------------------
+  TOPIC Fachdaten =
+    BASKET OID AS BasketID;
+    OID AS UUIDOID;
+    DEPENDS ON Testmodell_06.Stammdaten;
+!!------------------------------------------------------------------------------
+
+    CLASS Person =
+      erfasstVon    :  MANDATORY  TEXT*100;
+      erfasstAm     :  MANDATORY  XMLDateTime;
+      geaendertVon  :  MANDATORY  TEXT*100;
+      geaendertAm   :  MANDATORY  XMLDateTime;
+      Vorname       :             TEXT*50;
+      Nachname      :             TEXT*50;
+      Tel_G         :             TEXT*20;
+      Tel_M         :             TEXT*20;
+      E_Mail        :             TEXT*100;
+    END Person;
+
+    CLASS Adresse =
+      erfasstVon    :  MANDATORY  TEXT*100;
+      erfasstAm     :  MANDATORY  XMLDateTime;
+      geaendertVon  :  MANDATORY  TEXT*100;
+      geaendertAm   :  MANDATORY  XMLDateTime;
+      Zeile_1       :             TEXT*50;      !! bei Domiziladresse: Bahnhofstrasse 16; bei Postadresse: Postfach 1234
+      Zeile_2       :             TEXT*50;      !! im Normalfall leer
+      PLZ           :             1000..9999;
+      Ort           :             TEXT*50;
+    END Adresse;
+
+    CLASS Person__Adresse =
+      erfasstVon    :  MANDATORY  TEXT*100;
+      erfasstAm     :  MANDATORY  XMLDateTime;
+      geaendertVon  :  MANDATORY  TEXT*100;
+      geaendertAm   :  MANDATORY  XMLDateTime;
+    END Person__Adresse;
+
+    ASSOCIATION Person__Adresse__Person =
+      rPerson           --  {1}     Person;
+      rPerson__Adresse  --  {0..*}  Person__Adresse;
+    END Person__Adresse__Person;
+
+    ASSOCIATION Adresstyp__Person__Adresse =
+      rAdresstyp (EXTERNAL)  --  {1}     Testmodell_06.Stammdaten.Adresstyp;
+      rPerson__Adresse       --  {0..*}  Person__Adresse;
+    END Adresstyp__Person__Adresse;
+
+    ASSOCIATION Adresse__Adresse__Person =
+      rAdresse          --  {1}     Adresse;
+      rPerson__Adresse  --  {0..*}  Person__Adresse;
+    END Adresse__Adresse__Person;
+
+  END Fachdaten;
+
+END Testmodell_06.
